@@ -1,0 +1,21 @@
+for output test:-
+
+1. Multiple conditions with AND:
+
+SELECT id, email FROM customers WHERE status = 'active' AND signup_year = 2020;
+
+
+2. Using OR with parentheses:
+
+SELECT product_name FROM inventory WHERE (quantity = 0 OR discontinued = 'yes');
+
+
+3. Mix of AND and OR conditions:
+
+
+SELECT title FROM books WHERE (genre = 'fiction' OR genre = 'fantasy') AND published_year > 2010;
+
+
+4. Selecting multiple columns without WHERE clause:
+
+SELECT id, name, department FROM employees;

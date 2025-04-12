@@ -1,0 +1,385 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> query
+Rule 1     query -> select_statement
+Rule 2     select_statement -> SELECT select_list FROM table_references where_clause SEMICOLON
+Rule 3     select_list -> STAR
+Rule 4     select_list -> IDENTIFIER
+Rule 5     select_list -> select_list COMMA IDENTIFIER
+Rule 6     table_references -> IDENTIFIER
+Rule 7     table_references -> table_references COMMA IDENTIFIER
+Rule 8     where_clause -> WHERE condition
+Rule 9     where_clause -> empty
+Rule 10    condition -> IDENTIFIER OPERATOR value
+Rule 11    condition -> LPAREN condition RPAREN
+Rule 12    condition -> condition AND condition
+Rule 13    condition -> condition OR condition
+Rule 14    value -> NUMBER
+Rule 15    value -> STRING
+Rule 16    value -> IDENTIFIER
+Rule 17    empty -> <empty>
+
+Terminals, with rules where they appear
+
+AND                  : 12
+COMMA                : 5 7
+FROM                 : 2
+IDENTIFIER           : 4 5 6 7 10 16
+LPAREN               : 11
+NUMBER               : 14
+OPERATOR             : 10
+OR                   : 13
+RPAREN               : 11
+SELECT               : 2
+SEMICOLON            : 2
+STAR                 : 3
+STRING               : 15
+WHERE                : 8
+error                : 
+
+Nonterminals, with rules where they appear
+
+condition            : 8 11 12 12 13 13
+empty                : 9
+query                : 0
+select_list          : 2 5
+select_statement     : 1
+table_references     : 2 7
+value                : 10
+where_clause         : 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . query
+    (1) query -> . select_statement
+    (2) select_statement -> . SELECT select_list FROM table_references where_clause SEMICOLON
+
+    SELECT          shift and go to state 3
+
+    query                          shift and go to state 1
+    select_statement               shift and go to state 2
+
+state 1
+
+    (0) S' -> query .
+
+
+
+state 2
+
+    (1) query -> select_statement .
+
+    $end            reduce using rule 1 (query -> select_statement .)
+
+
+state 3
+
+    (2) select_statement -> SELECT . select_list FROM table_references where_clause SEMICOLON
+    (3) select_list -> . STAR
+    (4) select_list -> . IDENTIFIER
+    (5) select_list -> . select_list COMMA IDENTIFIER
+
+    STAR            shift and go to state 5
+    IDENTIFIER      shift and go to state 6
+
+    select_list                    shift and go to state 4
+
+state 4
+
+    (2) select_statement -> SELECT select_list . FROM table_references where_clause SEMICOLON
+    (5) select_list -> select_list . COMMA IDENTIFIER
+
+    FROM            shift and go to state 7
+    COMMA           shift and go to state 8
+
+
+state 5
+
+    (3) select_list -> STAR .
+
+    FROM            reduce using rule 3 (select_list -> STAR .)
+    COMMA           reduce using rule 3 (select_list -> STAR .)
+
+
+state 6
+
+    (4) select_list -> IDENTIFIER .
+
+    FROM            reduce using rule 4 (select_list -> IDENTIFIER .)
+    COMMA           reduce using rule 4 (select_list -> IDENTIFIER .)
+
+
+state 7
+
+    (2) select_statement -> SELECT select_list FROM . table_references where_clause SEMICOLON
+    (6) table_references -> . IDENTIFIER
+    (7) table_references -> . table_references COMMA IDENTIFIER
+
+    IDENTIFIER      shift and go to state 10
+
+    table_references               shift and go to state 9
+
+state 8
+
+    (5) select_list -> select_list COMMA . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 11
+
+
+state 9
+
+    (2) select_statement -> SELECT select_list FROM table_references . where_clause SEMICOLON
+    (7) table_references -> table_references . COMMA IDENTIFIER
+    (8) where_clause -> . WHERE condition
+    (9) where_clause -> . empty
+    (17) empty -> .
+
+    COMMA           shift and go to state 13
+    WHERE           shift and go to state 14
+    SEMICOLON       reduce using rule 17 (empty -> .)
+
+    where_clause                   shift and go to state 12
+    empty                          shift and go to state 15
+
+state 10
+
+    (6) table_references -> IDENTIFIER .
+
+    COMMA           reduce using rule 6 (table_references -> IDENTIFIER .)
+    WHERE           reduce using rule 6 (table_references -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 6 (table_references -> IDENTIFIER .)
+
+
+state 11
+
+    (5) select_list -> select_list COMMA IDENTIFIER .
+
+    FROM            reduce using rule 5 (select_list -> select_list COMMA IDENTIFIER .)
+    COMMA           reduce using rule 5 (select_list -> select_list COMMA IDENTIFIER .)
+
+
+state 12
+
+    (2) select_statement -> SELECT select_list FROM table_references where_clause . SEMICOLON
+
+    SEMICOLON       shift and go to state 16
+
+
+state 13
+
+    (7) table_references -> table_references COMMA . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 17
+
+
+state 14
+
+    (8) where_clause -> WHERE . condition
+    (10) condition -> . IDENTIFIER OPERATOR value
+    (11) condition -> . LPAREN condition RPAREN
+    (12) condition -> . condition AND condition
+    (13) condition -> . condition OR condition
+
+    IDENTIFIER      shift and go to state 19
+    LPAREN          shift and go to state 20
+
+    condition                      shift and go to state 18
+
+state 15
+
+    (9) where_clause -> empty .
+
+    SEMICOLON       reduce using rule 9 (where_clause -> empty .)
+
+
+state 16
+
+    (2) select_statement -> SELECT select_list FROM table_references where_clause SEMICOLON .
+
+    $end            reduce using rule 2 (select_statement -> SELECT select_list FROM table_references where_clause SEMICOLON .)
+
+
+state 17
+
+    (7) table_references -> table_references COMMA IDENTIFIER .
+
+    COMMA           reduce using rule 7 (table_references -> table_references COMMA IDENTIFIER .)
+    WHERE           reduce using rule 7 (table_references -> table_references COMMA IDENTIFIER .)
+    SEMICOLON       reduce using rule 7 (table_references -> table_references COMMA IDENTIFIER .)
+
+
+state 18
+
+    (8) where_clause -> WHERE condition .
+    (12) condition -> condition . AND condition
+    (13) condition -> condition . OR condition
+
+    SEMICOLON       reduce using rule 8 (where_clause -> WHERE condition .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+
+state 19
+
+    (10) condition -> IDENTIFIER . OPERATOR value
+
+    OPERATOR        shift and go to state 23
+
+
+state 20
+
+    (11) condition -> LPAREN . condition RPAREN
+    (10) condition -> . IDENTIFIER OPERATOR value
+    (11) condition -> . LPAREN condition RPAREN
+    (12) condition -> . condition AND condition
+    (13) condition -> . condition OR condition
+
+    IDENTIFIER      shift and go to state 19
+    LPAREN          shift and go to state 20
+
+    condition                      shift and go to state 24
+
+state 21
+
+    (12) condition -> condition AND . condition
+    (10) condition -> . IDENTIFIER OPERATOR value
+    (11) condition -> . LPAREN condition RPAREN
+    (12) condition -> . condition AND condition
+    (13) condition -> . condition OR condition
+
+    IDENTIFIER      shift and go to state 19
+    LPAREN          shift and go to state 20
+
+    condition                      shift and go to state 25
+
+state 22
+
+    (13) condition -> condition OR . condition
+    (10) condition -> . IDENTIFIER OPERATOR value
+    (11) condition -> . LPAREN condition RPAREN
+    (12) condition -> . condition AND condition
+    (13) condition -> . condition OR condition
+
+    IDENTIFIER      shift and go to state 19
+    LPAREN          shift and go to state 20
+
+    condition                      shift and go to state 26
+
+state 23
+
+    (10) condition -> IDENTIFIER OPERATOR . value
+    (14) value -> . NUMBER
+    (15) value -> . STRING
+    (16) value -> . IDENTIFIER
+
+    NUMBER          shift and go to state 29
+    STRING          shift and go to state 30
+    IDENTIFIER      shift and go to state 27
+
+    value                          shift and go to state 28
+
+state 24
+
+    (11) condition -> LPAREN condition . RPAREN
+    (12) condition -> condition . AND condition
+    (13) condition -> condition . OR condition
+
+    RPAREN          shift and go to state 31
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+
+state 25
+
+    (12) condition -> condition AND condition .
+    (12) condition -> condition . AND condition
+    (13) condition -> condition . OR condition
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 12 (condition -> condition AND condition .)
+    RPAREN          reduce using rule 12 (condition -> condition AND condition .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! AND             [ reduce using rule 12 (condition -> condition AND condition .) ]
+  ! OR              [ reduce using rule 12 (condition -> condition AND condition .) ]
+
+
+state 26
+
+    (13) condition -> condition OR condition .
+    (12) condition -> condition . AND condition
+    (13) condition -> condition . OR condition
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    SEMICOLON       reduce using rule 13 (condition -> condition OR condition .)
+    RPAREN          reduce using rule 13 (condition -> condition OR condition .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! AND             [ reduce using rule 13 (condition -> condition OR condition .) ]
+  ! OR              [ reduce using rule 13 (condition -> condition OR condition .) ]
+
+
+state 27
+
+    (16) value -> IDENTIFIER .
+
+    AND             reduce using rule 16 (value -> IDENTIFIER .)
+    OR              reduce using rule 16 (value -> IDENTIFIER .)
+    SEMICOLON       reduce using rule 16 (value -> IDENTIFIER .)
+    RPAREN          reduce using rule 16 (value -> IDENTIFIER .)
+
+
+state 28
+
+    (10) condition -> IDENTIFIER OPERATOR value .
+
+    AND             reduce using rule 10 (condition -> IDENTIFIER OPERATOR value .)
+    OR              reduce using rule 10 (condition -> IDENTIFIER OPERATOR value .)
+    SEMICOLON       reduce using rule 10 (condition -> IDENTIFIER OPERATOR value .)
+    RPAREN          reduce using rule 10 (condition -> IDENTIFIER OPERATOR value .)
+
+
+state 29
+
+    (14) value -> NUMBER .
+
+    AND             reduce using rule 14 (value -> NUMBER .)
+    OR              reduce using rule 14 (value -> NUMBER .)
+    SEMICOLON       reduce using rule 14 (value -> NUMBER .)
+    RPAREN          reduce using rule 14 (value -> NUMBER .)
+
+
+state 30
+
+    (15) value -> STRING .
+
+    AND             reduce using rule 15 (value -> STRING .)
+    OR              reduce using rule 15 (value -> STRING .)
+    SEMICOLON       reduce using rule 15 (value -> STRING .)
+    RPAREN          reduce using rule 15 (value -> STRING .)
+
+
+state 31
+
+    (11) condition -> LPAREN condition RPAREN .
+
+    AND             reduce using rule 11 (condition -> LPAREN condition RPAREN .)
+    OR              reduce using rule 11 (condition -> LPAREN condition RPAREN .)
+    SEMICOLON       reduce using rule 11 (condition -> LPAREN condition RPAREN .)
+    RPAREN          reduce using rule 11 (condition -> LPAREN condition RPAREN .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 25 resolved as shift
+WARNING: shift/reduce conflict for OR in state 25 resolved as shift
+WARNING: shift/reduce conflict for AND in state 26 resolved as shift
+WARNING: shift/reduce conflict for OR in state 26 resolved as shift
